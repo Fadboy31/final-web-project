@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ultimate Task Manager – Planning</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto&display=swap" rel="stylesheet">
+
+  <!-- Optional: CSS placeholders -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <h1>Ultimate Task Manager</h1>
+    <p>Plan, track, and complete your tasks efficiently</p>
+  </header>
+
+  <!-- Task Input Section -->
+  <section id="task-input">
+    <h2>Add New Task</h2>
+    <form id="add-task-form">
+      <input type="text" id="task-title" placeholder="Enter task title" required>
+      <button type="submit">Add Task</button>
+    </form>
+  </section>
+
+  <!-- Task Filters Section -->
+  <section id="task-filters">
+    <h2>Filter Tasks</h2>
+    <button data-filter="all">All</button>
+    <button data-filter="active">Active</button>
+    <button data-filter="completed">Completed</button>
+  </section>
+
+  <!-- Task List Section -->
+  <section id="task-list">
+    <h2>Your Tasks</h2>
+    <!-- Tasks will be dynamically generated here via JS -->
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Task Manager App – Designed by MelekhFad</p>
+  </footer>
+
+  <!-- JavaScript placeholders -->
+  <script src="js/data.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- Planning Notes -->
+  <!--
+    1. Features:
+       - Add new task
+       - Mark task complete/incomplete
+       - Delete task
+       - Filter tasks (All / Active / Completed)
+       - Persist tasks using localStorage
+       - Optional: Task editing
+       - Responsive UI
+
+    2. Data Structure:
+       const tasks = [
+         { id: 1, text: "Learn JavaScript", completed: false }
+       ];
+
+    3. Pages:
+       - index.html (Main app)
+       - about.html (Optional)
+       - contact.html (Optional)
+
+    4. Color Palette (from Coolors.co):
+       - Primary: #6C63FF
+       - Secondary: #F5F5F5
+       - Accent: #FF6584
+       - Text: #333333
+
+    5. Fonts:
+       - Headings: Poppins, sans-serif
+       - Body: Roboto, sans-serif
+
+    6. Wireframes:
+       - Header with app title
+       - Task input form
+       - Filter buttons
+       - Dynamic task list
+       - Footer
+  -->
+</body>
+</html>
