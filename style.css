@@ -1,0 +1,149 @@
+/* Quest 5: Style Task Manager */
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* CSS Variables */
+:root {
+  --primary-color: #8b5cf6;
+  --secondary-color: #00d4ff;
+  --text-color: #333;
+  --bg-color: #f5f5f5;
+}
+
+/* Body */
+body {
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+
+/* Header */
+header {
+  background-color: var(--primary-color);
+  color: #fff;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Navigation */
+nav ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  gap: 2rem;
+  margin-top: 0.5rem;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Main Sections */
+main section {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Task Input */
+#task-input form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#task-input input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#task-input button {
+  padding: 0.5rem;
+  background-color: var(--secondary-color);
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Task Filters */
+#task-filters {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+#task-filters button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: var(--primary-color);
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Task List */
+#tasks {
+  list-style: none;
+  margin-top: 1rem;
+}
+
+#tasks li {
+  padding: 0.75rem;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#tasks li.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* Footer */
+footer {
+  background-color: #222;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
+/* Responsive Design */
+/* Tablet */
+@media (min-width: 768px) {
+  #task-input form {
+    flex-direction: row;
+    gap: 1rem;
+  }
+  
+  #task-input input {
+    flex: 1;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  header h1 {
+    font-size: 2.5rem;
+  }
+}
