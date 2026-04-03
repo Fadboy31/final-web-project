@@ -2,62 +2,294 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+
+  <!-- Responsive -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ultimate Task Manager</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/responsive.css">
+
+  <!-- SEO -->
+  <meta name="description" content="Task Manager App built with HTML, CSS, and JavaScript">
+
+  <title>Task Manager</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="images/favicon.ico">
+
+  <style>
+    /* RESET */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #8b5cf6;
+      --secondary: #00d4ff;
+      --bg: #f5f5f5;
+      --text: #333;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    main {
+      padding: 1rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 10px;
+      width: 100%;
+    }
+
+    button {
+      padding: 10px;
+      border: none;
+      background: var(--secondary);
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    li {
+      background: white;
+      margin-bottom: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border-radius: 5px;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 20px;
+      background: #222;
+      color: white;
+    }
+
+    /* Tablet */
+    @media (min-width: 768px) {
+      nav {
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      form {
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      input {
+        width: 60%;
+      }
+
+      li {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    /* Desktop */
+    @media (min-width: 1024px) {
+      main {
+        max-width: 800px;
+        margin: auto;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-  <!-- Header -->
   <header>
-    <h1>Ultimate Task Manager</h1>
-    <p>Track your tasks and stay productive</p>
+    <h1>Task Manager</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Tasks</a>
+      <a href="#">About</a>
+    </nav>
   </header>
 
-  <!-- Navigation (optional for multi-page) -->
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
-
-  <!-- Main content -->
   <main>
-    <!-- Task input section -->
-    <section id="task-input">
-      <h2>Add New Task</h2>
+
+    <section aria-labelledby="task-heading">
+      <h2 id="task-heading">Manage Your Tasks</h2>
+
       <form id="task-form">
-        <label for="task-input-field">Task Title:</label>
-        <input type="text" id="task-input-field" name="task-input-field" placeholder="Enter task" required>
+        <label for="task-input-field">Add Task</label>
+        <input 
+          id="task-input-field" 
+          type="text" 
+          placeholder="Enter task..." 
+          required 
+          minlength="3"
+        >
         <button type="submit">Add Task</button>
       </form>
+
+      <ul id="tasks" aria-live="polite"></ul>
     </section>
 
-    <!-- Task filters -->
-    <section id="task-filters">
-      <h2>Filter Tasks</h2>
-      <button data-filter="all">All</button>
-      <button data-filter="active">Active</button>
-      <button data-filter="completed">Completed</button>
-    </section>
-
-    <!-- Task list -->
-    <section id="task-list">
-      <h2>Your Tasks</h2>
-      <ul id="tasks">
-        <!-- Tasks will be inserted here by JavaScript -->
-      </ul>
-    </section>
   </main>
 
-  <!-- Footer -->
   <footer>
-    <p>&copy; 2026 MelekhFad – Ultimate Task Manager</p>
+    <p>© 2026 Task Manager | Built by MelekhFad</p>
   </footer>
 
-  <script src="quest5-javascript-interactivity.js"></script>
+  <script>
+    let tasks = [];
+
+    const form = document.getElementById("task-form");
+    const input = document.getElementById("task-input-field");
+    const taskList = document.getElementById("tasks");
+
+    function showError(message) {
+      alert(message);
+    }
+
+    function validateInput(text) {
+      if (!text || text.trim() === "") {
+        showError("Please enter a task");
+        return false;
+      }
+      if (text.trim().length < 3) {
+        showError("Task must be at least 3 characters");
+        return false;
+      }
+      return true;
+    }
+
+    function saveTasks() {
+      try {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      } catch (e) {
+        showError("Storage error!");
+      }
+    }
+
+    function loadTasks() {
+      try {
+        const saved = localStorage.getItem("tasks");
+        if (saved) tasks = JSON.parse(saved);
+      } catch (e) {
+        tasks = [];
+      }
+      renderTasks();
+    }
+
+    function addTask(text) {
+      if (!validateInput(text)) return;
+
+      const newTask = {
+        id: Date.now(),
+        text,
+        completed: false
+      };
+
+      tasks.push(newTask);
+      saveTasks();
+      renderTasks();
+    }
+
+    function renderTasks() {
+      taskList.innerHTML = "";
+
+      tasks.forEach(task => {
+        const li = document.createElement("li");
+        li.textContent = task.text;
+
+        if (task.completed) li.classList.add("completed");
+
+        li.addEventListener("click", () => toggleTask(task.id));
+
+        const btn = document.createElement("button");
+        btn.textContent = "Delete";
+
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          deleteTask(task.id);
+        });
+
+        li.appendChild(btn);
+        taskList.appendChild(li);
+      });
+    }
+
+    function toggleTask(id) {
+      tasks = tasks.map(t =>
+        t.id === id ? { ...t, completed: !t.completed } : t
+      );
+      saveTasks();
+      renderTasks();
+    }
+
+    function deleteTask(id) {
+      tasks = tasks.filter(t => t.id !== id);
+      saveTasks();
+      renderTasks();
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      addTask(input.value);
+      input.value = "";
+    });
+
+    loadTasks();
+  </script>
+
 </body>
 </html>

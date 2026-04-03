@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ultimate Task Manager</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1>Ultimate Task Manager</h1>
+    <p>Track your tasks and stay productive</p>
+  </header>
+
+  <!-- Navigation (optional for multi-page) -->
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main content -->
+  <main>
+    <!-- Task input section -->
+    <section id="task-input">
+      <h2>Add New Task</h2>
+      <form id="task-form">
+        <label for="task-input-field">Task Title:</label>
+        <input type="text" id="task-input-field" name="task-input-field" placeholder="Enter task" required>
+        <button type="submit">Add Task</button>
+      </form>
+    </section>
+
+    <!-- Task filters -->
+    <section id="task-filters">
+      <h2>Filter Tasks</h2>
+      <button data-filter="all">All</button>
+      <button data-filter="active">Active</button>
+      <button data-filter="completed">Completed</button>
+    </section>
+
+    <!-- Task list -->
+    <section id="task-list">
+      <h2>Your Tasks</h2>
+      <ul id="tasks">
+        <!-- Tasks will be inserted here by JavaScript -->
+      </ul>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 MelekhFad – Ultimate Task Manager</p>
+  </footer>
+
+  <script src="quest5-javascript-interactivity.js"></script>
+</body>
+</html>
