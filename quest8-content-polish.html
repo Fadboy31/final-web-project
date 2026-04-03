@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <!-- CRITICAL: Responsive viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Task Manager - Responsive</title>
+
+  <style>
+    /* RESET */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      line-height: 1.6;
+    }
+
+    /* HEADER */
+    header {
+      background: #8b5cf6;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    /* NAV - Mobile First (stacked) */
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    /* MAIN */
+    main {
+      padding: 15px;
+    }
+
+    /* FORM - Mobile First (stacked) */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 10px;
+      width: 100%;
+    }
+
+    button {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    /* TASK LIST */
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: white;
+      margin-bottom: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border-radius: 5px;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+
+    /* 📲 TABLET */
+    @media (min-width: 768px) {
+
+      nav {
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      form {
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      input {
+        width: 60%;
+      }
+
+      li {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    /* 💻 DESKTOP */
+    @media (min-width: 1024px) {
+
+      main {
+        max-width: 800px;
+        margin: auto;
+      }
+
+      header h1 {
+        font-size: 2.5rem;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Task Manager</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Tasks</a>
+      <a href="#">About</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <form id="task-form">
+      <input id="task-input-field" type="text" placeholder="Enter task..." required>
+      <button type="submit">Add Task</button>
+    </form>
+
+    <ul id="tasks"></ul>
+
+  </main>
+
+  <script>
+    let tasks = [];
+
+    const form = document.getElementById("task-form");
+    const input = document.getElementById("task-input-field");
+    const taskList = document.getElementById("tasks");
+
+    function loadTasks() {
+      const saved = localStorage.getItem("tasks");
+      if (saved) {
+        tasks = JSON.parse(saved);
+      }
+      renderTasks();
+    }
+
+    function saveTasks() {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    function addTask(text) {
+      const newTask = {
+        id: Date.now(),
+        text,
+        completed: false
+      };
+      tasks.push(newTask);
+      saveTasks();
+      renderTasks();
+    }
+
+    function renderTasks() {
+      taskList.innerHTML = "";
+
+      tasks.forEach(task => {
+        const li = document.createElement("li");
+        li.textContent = task.text;
+
+        if (task.completed) li.classList.add("completed");
+
+        li.addEventListener("click", () => toggleTask(task.id));
+
+        const btn = document.createElement("button");
+        btn.textContent = "Delete";
+
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          deleteTask(task.id);
+        });
+
+        li.appendChild(btn);
+        taskList.appendChild(li);
+      });
+    }
+
+    function toggleTask(id) {
+      tasks = tasks.map(t =>
+        t.id === id ? { ...t, completed: !t.completed } : t
+      );
+      saveTasks();
+      renderTasks();
+    }
+
+    function deleteTask(id) {
+      tasks = tasks.filter(t => t.id !== id);
+      saveTasks();
+      renderTasks();
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const text = input.value.trim();
+      if (!text) return;
+
+      addTask(text);
+      input.value = "";
+    });
+
+    loadTasks();
+  </script>
+
+</body>
+</html>
