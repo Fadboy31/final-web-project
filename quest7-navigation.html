@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager - Quest 7</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+    }
+
+    header {
+      background: #8b5cf6;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    form {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 10px;
+      width: 250px;
+    }
+
+    button {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    ul {
+      max-width: 500px;
+      margin: auto;
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: white;
+      margin-bottom: 10px;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      border-radius: 5px;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Task Manager</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Tasks</a>
+      <a href="#">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <form id="task-form">
+      <input id="task-input-field" type="text" placeholder="Enter task..." required>
+      <button type="submit">Add</button>
+    </form>
+
+    <ul id="tasks"></ul>
+  </main>
+
+  <script>
+    // STATE
+    let tasks = [];
+
+    // ELEMENTS
+    const form = document.getElementById("task-form");
+    const input = document.getElementById("task-input-field");
+    const taskList = document.getElementById("tasks");
+
+    // LOAD TASKS
+    function loadTasks() {
+      const saved = localStorage.getItem("tasks");
+      if (saved) {
+        tasks = JSON.parse(saved);
+      }
+      renderTasks();
+    }
+
+    // SAVE TASKS
+    function saveTasks() {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    // ADD TASK
+    function addTask(text) {
+      const newTask = {
+        id: Date.now(),
+        text: text,
+        completed: false
+      };
+
+      tasks.push(newTask);
+      saveTasks();
+      renderTasks();
+    }
+
+    // RENDER TASKS
+    function renderTasks() {
+      taskList.innerHTML = "";
+
+      tasks.forEach(task => {
+        const li = document.createElement("li");
+        li.textContent = task.text;
+
+        if (task.completed) {
+          li.classList.add("completed");
+        }
+
+        li.addEventListener("click", () => {
+          toggleTask(task.id);
+        });
+
+        const btn = document.createElement("button");
+        btn.textContent = "Delete";
+
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          deleteTask(task.id);
+        });
+
+        li.appendChild(btn);
+        taskList.appendChild(li);
+      });
+    }
+
+    // TOGGLE TASK
+    function toggleTask(id) {
+      tasks = tasks.map(task =>
+        task.id === id
+          ? { ...task, completed: !task.completed }
+          : task
+      );
+
+      saveTasks();
+      renderTasks();
+    }
+
+    // DELETE TASK
+    function deleteTask(id) {
+      tasks = tasks.filter(task => task.id !== id);
+
+      saveTasks();
+      renderTasks();
+    }
+
+    // EVENT
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const text = input.value.trim();
+      if (text === "") return;
+
+      addTask(text);
+      input.value = "";
+    });
+
+    // INIT
+    loadTasks();
+  </script>
+
+</body>
+</html>
