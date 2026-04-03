@@ -1,36 +1,92 @@
-// Quest 5: JavaScript Interactivity
+// Quest 6: Full Task Manager Logic
 
-// Select elements
-const form = document.querySelector("#task-form");
-const input = document.querySelector("#task-input-field");
-const taskList = document.querySelector("#tasks");
+// State
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-// Add task
+// Elements
+const form = document.getElementById("task-form");
+const input = document.getElementById("task-input-field");
+const taskList = document.getElementById("tasks");
+
+// Add Task
+function addTask(text) {
+  const newTask = {
+    id: Date.now(),
+    text: text,
+    completed: false
+  };
+
+  tasks.push(newTask);
+  saveTasks();
+  renderTasks();
+}
+
+// Render Tasks
+function renderTasks() {
+  taskList.innerHTML = "";
+
+  tasks.forEach(task => {
+    const li = document.createElement("li");
+    li.textContent = task.text;
+
+    if (task.completed) {
+      li.classList.add("completed");
+    }
+
+    // Toggle complete
+    li.addEventListener("click", () => {
+      toggleTask(task.id);
+    });
+
+    // Delete button
+    const btn = document.createElement("button");
+    btn.textContent = "Delete";
+
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      deleteTask(task.id);
+    });
+
+    li.appendChild(btn);
+    taskList.appendChild(li);
+  });
+}
+
+// Toggle Task
+function toggleTask(id) {
+  tasks = tasks.map(task =>
+    task.id === id
+      ? { ...task, completed: !task.completed }
+      : task
+  );
+
+  saveTasks();
+  renderTasks();
+}
+
+// Delete Task
+function deleteTask(id) {
+  tasks = tasks.filter(task => task.id !== id);
+
+  saveTasks();
+  renderTasks();
+}
+
+// Save to localStorage
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+// Event Listener
 form.addEventListener("submit", function (e) {
   e.preventDefault();
 
-  const taskText = input.value.trim();
-  if (taskText === "") return;
+  const text = input.value.trim();
+  if (text === "") return;
 
-  // Create task item
-  const li = document.createElement("li");
-  li.textContent = taskText;
-
-  // Toggle complete
-  li.addEventListener("click", () => {
-    li.classList.toggle("completed");
-  });
-
-  // Delete button
-  const btn = document.createElement("button");
-  btn.textContent = "Delete";
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    li.remove();
-  });
-
-  li.appendChild(btn);
-  taskList.appendChild(li);
-
+  addTask(text);
   input.value = "";
 });
+
+// Initial Load
+renderTasks();
